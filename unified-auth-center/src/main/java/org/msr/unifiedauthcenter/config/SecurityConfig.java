@@ -48,6 +48,7 @@ public class SecurityConfig {
 
     /**
      * 授权服务器过滤链
+     * 这里主要是配置协议端点
      *
      * @param http
      * @return
@@ -74,6 +75,15 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * 授权服务器过滤链
+     * 这里配置的认证过滤
+     * spring容器内的所有 SecurityFilterChain 都会被注入到 WebSecurityConfiguration
+     *
+     * @param http
+     * @return
+     * @throws Exception
+     */
     @Bean
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
@@ -88,6 +98,11 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * 创建一个基于内存的用户信息
+     *
+     * @return
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails userDetails = User.withDefaultPasswordEncoder()
@@ -99,6 +114,10 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(userDetails);
     }
 
+    /**
+     *
+     * @return
+     */
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
         RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
